@@ -4,29 +4,22 @@ public class MyFirstProgram {
 
 	public static void main(String[] args) {
 		hello("Peter");
-		hello("Lucy");
-		hello("Anthony");
-		hello("Carl");
 
-		double l = 5;
-		System.out.println("Площадь квадрата со стороной " + l + " = " + area(l));
+		Square s = new Square(5);
+		System.out.println("Площадь квадрата со стороной " + s.l + " = " + s.area());
 
-		double a = 10;
-		double b = 4;
-		System.out.println("Площадь прямоугольника со сторонами " + a + " и " + b + " = " + area(a, b));
+		Rectangle r = new Rectangle(4, 6);
+		System.out.println("Площадь прямоугольника со сторонами " + r.a + " и " + r.b + " = " + r.area());
+
+		Point P = new Point(1, 1, 5, 5);
+		System.out.println("Расстояние между точками =" + distance(P));
 	}
-
 
 	public static void hello(String somebody) {
 		System.out.println("Hello, "+ somebody + "!");
 	}
 
-	public static double area(double len) {
-		return len * len;
+	public static double distance (Point P){
+		return Math.sqrt((P.x2-P.x1)*(P.x2-P.x1)+(P.y2-P.y1)*(P.y2-P.y1));
 	}
-
-	public static double area(double a, double b) {
-		return a * b;
-	}
-
 }
