@@ -11,15 +11,16 @@ public class MyFirstProgram {
 		Rectangle r = new Rectangle(4, 6);
 		System.out.println("Площадь прямоугольника со сторонами " + r.a + " и " + r.b + " = " + r.area());
 
-		Point P = new Point(1, 1, 5, 5);
-		System.out.println("Расстояние между точками =" + distance(P));
+		Point p1 = new Point(34, 18);
+		Point p2 = new Point(0, -6);
+		System.out.println("Расстояние между точками =" + p1.distance(p2));
 	}
 
 	public static void hello(String somebody) {
 		System.out.println("Hello, "+ somebody + "!");
 	}
 
-	public static double distance (Point P){
-		return Math.sqrt((P.x2-P.x1)*(P.x2-P.x1)+(P.y2-P.y1)*(P.y2-P.y1));
+	public static double distance (Point p1, Point p2){
+		return Math.sqrt((p2.x-p1.x)*(p2.x-p1.x)+(p2.y-p1.y)*(p2.y-p1.y));
 	}
 }
