@@ -18,7 +18,7 @@ public class GroupCreationTests {
     login("admin", "secret");
   }
 
-  private void login(String username, String password) {
+  public void login(String username, String password) {
     wd.get("http://localhost/addressbook/");
     wd.findElement(By.name("user")).clear();
     wd.findElement(By.name("user")).sendKeys(username);
@@ -37,19 +37,19 @@ public class GroupCreationTests {
     logout();
   }
 
-  private void logout() {
+  public void logout() {
     wd.findElement(By.linkText("Logout")).click();
   }
 
-  private void returnToGroupPage() {
+  public void returnToGroupPage() {
     wd.findElement(By.linkText("groups")).click();
   }
 
-  private void submitGroupCreation() {
+  public void submitGroupCreation() {
     wd.findElement(By.name("submit")).click();
   }
 
-  private void filGroupForm(GroupData groupData) {
+  public void filGroupForm(GroupData groupData) {
     wd.findElement(By.name("group_name")).click();
     wd.findElement(By.name("group_name")).clear();
     wd.findElement(By.name("group_name")).sendKeys(groupData.getName());
@@ -61,11 +61,11 @@ public class GroupCreationTests {
     wd.findElement(By.name("group_footer")).sendKeys(groupData.getFooter());
   }
 
-  private void initGroupCreation() {
+  public void initGroupCreation() {
     wd.findElement(By.name("new")).click();
   }
 
-  private void gotoGroupPage() {
+  public void gotoGroupPage() {
     wd.findElement(By.linkText("groups")).click();
   }
 
