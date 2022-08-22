@@ -1,13 +1,14 @@
-package ru.stqa.pft.addressbook;
+package ru.stqa.pft.addressbook.tests;
 import java.time.Duration;
 import org.testng.annotations.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import ru.stqa.pft.addressbook.model.ContactsData;
 
 public class ContactCreationTests {
   private WebDriver wd;
 
-  @BeforeClass(alwaysRun = true)
+  @BeforeMethod(alwaysRun = true)
   public void setUp() throws Exception {
     wd = new FirefoxDriver();
     wd.manage().timeouts().implicitlyWait(Duration.ofSeconds(30));
@@ -58,7 +59,7 @@ public class ContactCreationTests {
     wd.findElement(By.xpath("//input[@value='Login']")).click();
   }
 
-  @AfterClass(alwaysRun = true)
+  @AfterMethod(alwaysRun = true)
   public void tearDown() throws Exception {
     wd.quit();
   }
