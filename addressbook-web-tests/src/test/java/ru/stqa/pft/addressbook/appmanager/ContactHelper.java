@@ -7,7 +7,6 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactsData;
 
 public class ContactHelper  extends HelperBase{
-    private WebDriver wd;
 
     public ContactHelper(WebDriver wd) {
         super(wd);
@@ -19,12 +18,12 @@ public class ContactHelper  extends HelperBase{
         type(By.name("home"), contactsData.getPhone());
         type(By.name("email"), contactsData.getEmail());
         type(By.name("address"), contactsData.getAddress());
-//        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
-//        click(By.xpath("//div[@id='content']/form/input[21]"));
+ //       click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
+   //     click(By.xpath("//div[@id='content']/form/input[21]"));
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactsData.getGroup());
+            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
         } else {
-            Assert.assertFalse(isElementPresent(By.name("new_group")));
+            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
         }
     }
 
