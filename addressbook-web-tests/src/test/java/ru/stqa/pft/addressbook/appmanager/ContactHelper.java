@@ -63,4 +63,10 @@ public class ContactHelper  extends HelperBase{
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
     }
+
+    public void checkContactExistence() {
+        if (! isThereAContact()) {
+            createContact(new ContactsData("Clark", "Kent", "454545", "superman@mail.ru", "smallville", "test1"), true);
+        }
+    }
 }

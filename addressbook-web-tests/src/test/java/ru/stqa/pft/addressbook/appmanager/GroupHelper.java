@@ -55,4 +55,10 @@ public class GroupHelper extends HelperBase {
     public boolean isThereAGroup() {
         return isElementPresent(By.name("selected[]"));
     }
+
+    public void checkGroupExistence() {
+        if (! isThereAGroup()) {
+            createGroup(new GroupData("test1", "test2", "test3"));
+        }
+    }
 }
