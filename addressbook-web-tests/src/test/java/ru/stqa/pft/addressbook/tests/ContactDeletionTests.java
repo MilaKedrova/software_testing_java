@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ContactDeletionTests extends TestBase {
 
-    @Test (enabled = false)
+    @Test
     public void contactDeletionTests () {
         app.getNavigationHelper().gotoGroupPage();
         app.getGroupHelper().checkGroupExistence();
