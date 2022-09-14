@@ -3,8 +3,11 @@ package ru.stqa.pft.addressbook.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactsData;
+import ru.stqa.pft.addressbook.model.GroupData;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
 
 
 public class ContactModificationTests extends TestBase {
@@ -26,9 +29,6 @@ public class ContactModificationTests extends TestBase {
 
             before.remove(0);
             before.add(contact);
-            Comparator<? super ContactsData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
-            before.sort(byId);
-            after.sort(byId);
-            Assert.assertEquals(before, after);
+            Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
     }
 }
