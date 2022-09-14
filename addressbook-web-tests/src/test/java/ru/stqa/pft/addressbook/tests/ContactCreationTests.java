@@ -12,17 +12,17 @@ public class ContactCreationTests extends TestBase {
 
     @Test (enabled = false)
     public void testContactCreation() throws Exception {
-        app.goTo().groupPage();
-        app.group().checkGroupExistence();
-        app.goTo().gotoHomePage();
+        app.getNavigationHelper().gotoGroupPage();
+        app.getGroupHelper().checkGroupExistence();
+        app.getNavigationHelper().gotoHomePage();
         List<ContactsData> before = app.getContactHelper().getContactList();
         ContactsData contact = new ContactsData("Clarky", "Kent", "454545", "superman@mail.ru", "smallville", "test1");
         app.getContactHelper().addNewContactPage();
         app.getContactHelper().createContact(contact, true);
-        app.goTo().gotoHomePage();
+        app.getNavigationHelper().gotoHomePage();
         List<ContactsData> after = app.getContactHelper().getContactList();
         Assert.assertEquals(after.size(), before.size() + 1);
-        app.goTo().gotoHomePage();
+        app.getNavigationHelper().gotoHomePage();
 
         before.add(contact);
         Comparator<? super ContactsData> byId = (c1, c2) -> Integer.compare(c1.getId(), c2.getId());
