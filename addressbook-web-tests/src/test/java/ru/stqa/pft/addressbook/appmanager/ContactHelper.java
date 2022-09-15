@@ -40,7 +40,7 @@ public class ContactHelper  extends HelperBase{
     }
 
     public void initContactModification(int index) {
-        wd.findElements(By.xpath("//*[@id='maintable']/tbody/tr[2]/td[8]")).get(index).click();
+        wd.findElements(By.xpath("//img[@alt='Edit']")).get(index).click();
     }
 
     public void submitContactModification() {
@@ -69,8 +69,8 @@ public class ContactHelper  extends HelperBase{
 
     public void checkContactExistence() {
         if (! isThereAContact()) {
-
-            createContact(new ContactsData("Clark", "Kent", "454545", "superman@mail.ru", "smallville", "test1"), true);
+            addNewContactPage();
+            createContact(new ContactsData("Clark", "Kent", "454545", "superman@mail.ru", "smallville", "test10"), true);
         }
     }
 

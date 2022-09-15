@@ -14,7 +14,6 @@ public class ContactDeletionTests extends TestBase {
         app.getNavigationHelper().gotoGroupPage();
         app.getGroupHelper().checkGroupExistence();
         app.getNavigationHelper().gotoHomePage();
-        app.getContactHelper().addNewContactPage();
         app.getContactHelper().checkContactExistence();
         app.getNavigationHelper().gotoHomePage();
         List<ContactsData> before = app.getContactHelper().getContactList();

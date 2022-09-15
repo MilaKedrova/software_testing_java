@@ -18,7 +18,7 @@ public class ContactCreationTests extends TestBase {
         app.getGroupHelper().checkGroupExistence();
         app.getNavigationHelper().gotoHomePage();
         List<ContactsData> before = app.getContactHelper().getContactList();
-        ContactsData contact = new ContactsData("Clarky", "Kent", "454545", "superman@mail.ru", "smallville", "test1");
+        ContactsData contact = new ContactsData("Clarky", "Kent", "454545", "superman@mail.ru", "smallville", "test10");
         app.getContactHelper().addNewContactPage();
         app.getContactHelper().createContact(contact, true);
         app.getNavigationHelper().gotoHomePage();
