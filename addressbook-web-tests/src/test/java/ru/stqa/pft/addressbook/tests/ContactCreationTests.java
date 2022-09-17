@@ -1,33 +1,41 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
 import org.testng.annotations.*;
+import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.ContactsData;
 
 import java.util.HashSet;
-import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 
 public class ContactCreationTests extends TestBase {
 
-    @Test
-    public void testContactCreation() throws Exception {
+    @BeforeMethod
+    public void ensurePreconditions() {
         app.goTo().groupPage();
         app.group().checkExistence();
-        app.goTo().gotoHomePage();
-        List<ContactsData> before = app.getContactHelper().getContactList();
-        ContactsData contact = new ContactsData("Clarky", "Kent", "454545", "superman@mail.ru", "smallville", "test10");
-        app.getContactHelper().addNewContactPage();
-        app.getContactHelper().createContact(contact, true);
-        app.goTo().gotoHomePage();
-        List<ContactsData> after = app.getContactHelper().getContactList();
-        Assert.assertEquals(after.size(), before.size() + 1);
-        app.goTo().gotoHomePage();
+        app.goTo().contactPage();
+    }
 
-//        before.add(contact);
-//        Comparator<? super ContactsData> byId = (Comparator<ContactsData>) (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
-        contact.setId(after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId());
-        before.add(contact);
-        Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+    @Test
+    public void testContactCreation() throws Exception {
+        Contacts before = app.contact().all();
+        ContactsData contact = new ContactsData().
+                withFirstName("Clarky").withLastName("Kent").withPhone("454545").
+                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10");
+        app.contact().create(contact, true);
+        app.goTo().contactPage();
+        Contacts after = app.contact().all();
+        assertThat(after.size(), equalTo(before.size() + 1));
+        app.goTo().contactPage();
+
+        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
 }

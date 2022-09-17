@@ -58,11 +58,7 @@ public class ApplicationManager {
         return navigationHelper;
     }
 
-    public ContactHelper getContactHelper() {
+    public ContactHelper contact() {
         return contactHelper;
-    }
-
-    public void acceptAlert() {
-        wd.switchTo().alert().accept();
     }
 }

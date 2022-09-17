@@ -1,32 +1,47 @@
 package ru.stqa.pft.addressbook.tests;
 
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.ContactsData;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.testng.Assert.assertEquals;
 
 
 public class ContactModificationTests extends TestBase {
 
-    @Test
-        public void contactModificationTests () {
-            app.goTo().groupPage();
-            app.group().checkExistence();
-            app.goTo().gotoHomePage();
-            app.getContactHelper().checkContactExistence();
-            List<ContactsData> before = app.getContactHelper().getContactList();
-            app.getContactHelper().initContactModification(0);
-            ContactsData contact = new ContactsData(before.get(0).getId(), "Kal", "El", "123456", "superman@mail.ru", "krypton", null);
-            app.getContactHelper().filContactForm(contact, false);
-            app.getContactHelper().submitContactModification();
-            app.goTo().gotoHomePage();
-            List<ContactsData> after = app.getContactHelper().getContactList();
-            Assert.assertEquals(after.size(), before.size());
-
-            before.remove(0);
-            before.add(contact);
-            Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+    @BeforeMethod
+    public void ensurePreconditions() {
+        app.goTo().groupPage();
+        app.group().checkExistence();
+        app.goTo().contactPage();
+        app.contact().checkExistence();
+        app.goTo().contactPage();
     }
+
+    @Test
+    public void contactModificationTests() {
+        Contacts before = app.contact().all();
+        ContactsData modifiedContact = before.iterator().next();
+        ContactsData contact = new ContactsData().withId(modifiedContact.getId()).
+                withFirstName("Kal").withLastName("El").withPhone("123456").withEmail("superman@mail.ru").
+                withAddress("krypton");
+
+        app.contact().modify(contact);
+        app.goTo().contactPage();
+        Contacts after = app.contact().all();
+        assertEquals(after.size(), before.size());
+
+        assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
+    }
+
 }
