@@ -9,32 +9,15 @@ public class ContactsData {
     private String lastName;
     private String phone;
     private String email;
+    private String email2;
+    private String email3;
+    private String allEmails;
     private String address;
     private String group;
     private String homePhone;
     private String mobilePhone;
     private String workPhone;
     private String allPhones;
-
-//    public ContactsData(int id, String firstName, String lastName, String phone, String email, String address, String group) {
-//        this.id = id;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.phone = phone;
-//        this.email = email;
-//        this.address = address;
-//        this.group = group;
-//    }
-//
-//    public ContactsData(String firstName, String lastName, String phone, String email, String address, String group) {
-//        this.id = 0;
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.phone = phone;
-//        this.email = email;
-//        this.address = address;
-//        this.group = group;
-//    }
 
     public String getAllPhones() {
         return allPhones;
@@ -92,17 +75,45 @@ public class ContactsData {
         return email;
     }
 
+    public String getEmail2() {
+        return email2;
+    }
+
+    public String getEmail3() {
+        return email3;
+    }
+
+    public String getAllEmails() {
+        return allEmails;
+    }
+
+    public ContactsData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public ContactsData withEmail2(String email2) {
+        this.email2 = email2;
+        return this;
+    }
+
+    public ContactsData withEmail3(String email3) {
+        this.email3 = email3;
+        return this;
+    }
+
+    public ContactsData withAllEmails(String allEmails) {
+        this.allEmails = allEmails;
+        return this;
+    }
+
     public String getAddress() {
         return address;
     }
 
-    @Override
-    public String toString() {
-        return "ContactsData{" +
-                "id='" + id + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
+    public ContactsData withAddress(String address) {
+        this.address = address;
+        return this;
     }
 
     public String getGroup() {
@@ -129,16 +140,6 @@ public class ContactsData {
         return this;
     }
 
-    public ContactsData withEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public ContactsData withAddress(String address) {
-        this.address = address;
-        return this;
-    }
-
     public ContactsData withGroup(String group) {
         this.group = group;
         return this;
@@ -162,5 +163,14 @@ public class ContactsData {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ContactsData{" +
+                "id='" + id + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
