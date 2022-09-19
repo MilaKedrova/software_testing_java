@@ -14,6 +14,7 @@ public class ContactsData {
     private String homePhone;
     private String mobilePhone;
     private String workPhone;
+    private String allPhones;
 
 //    public ContactsData(int id, String firstName, String lastName, String phone, String email, String address, String group) {
 //        this.id = id;
@@ -34,6 +35,15 @@ public class ContactsData {
 //        this.address = address;
 //        this.group = group;
 //    }
+
+    public String getAllPhones() {
+        return allPhones;
+    }
+
+    public ContactsData withAllPhones(String allPhones) {
+        this.allPhones = allPhones;
+        return this;
+    }
 
     public String getHomePhone() {
         return homePhone;
