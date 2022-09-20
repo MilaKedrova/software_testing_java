@@ -23,10 +23,10 @@ public class ContactCreationTests extends TestBase {
     @Test
     public void testContactCreation() throws Exception {
         Contacts before = app.contact().all();
-        File photo = new File();
+        File photo = new File("src/test/resources/test.jpeg");
         ContactsData contact = new ContactsData().
                 withFirstName("Clarky").withLastName("Kent").withPhone("454545").
-                withEmail("superman@mail.ru").withAddress("smallville").withPhoto(photo);
+                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withPhoto(photo);
         app.contact().create(contact, true);
         app.goTo().contactPage();
         Contacts after = app.contact().all();
@@ -35,6 +35,16 @@ public class ContactCreationTests extends TestBase {
 
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
+
+//    @Test
+//    public void testCurrentDir() {
+//        File currentDir = new File(".");
+//        System.out.println(currentDir.getAbsolutePath());
+//        File photo = new File("src/test/resources/test.jpeg");
+//        System.out.println(photo.getAbsolutePath());
+//        System.out.println(photo.exists());
+//    }
+
 
     @Test (enabled = false)
     public void testBadContactCreation() throws Exception {
