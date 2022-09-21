@@ -25,7 +25,6 @@ public class ContactHelper  extends HelperBase{
         type(By.name("lastname"), contactsData.getLastName());
         type(By.name("home"), contactsData.getPhone());
         type(By.name("email"), contactsData.getEmail());
-        attach(By.name("photo"), contactsData.getPhoto());
         type(By.name("address"), contactsData.getAddress());
 
         if (creation) {
@@ -33,6 +32,16 @@ public class ContactHelper  extends HelperBase{
         } else {
             Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
         }
+        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
+        click(By.xpath("//div[@id='content']/form/input[21]"));
+    }
+
+    private void filContactFormWithoutGroup(ContactsData contactsData, boolean creation) {
+        type(By.name("firstname"), contactsData.getFirstName());
+        type(By.name("lastname"), contactsData.getLastName());
+        type(By.name("home"), contactsData.getPhone());
+        type(By.name("email"), contactsData.getEmail());
+        type(By.name("address"), contactsData.getAddress());
         click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
@@ -132,6 +141,12 @@ public class ContactHelper  extends HelperBase{
     public void create(ContactsData contact, boolean b) {
         addNewContactPage();
         filContactForm(contact, true);
+        contactCache = null;
+    }
+
+    public void createWithoutGroup(ContactsData contact, boolean b) {
+        addNewContactPage();
+        filContactFormWithoutGroup(contact, true);
         contactCache = null;
     }
 

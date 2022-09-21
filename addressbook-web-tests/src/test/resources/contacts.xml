@@ -1,0 +1,23 @@
+<list>
+  <contact>
+    <firstName>Тест 0</firstName>
+    <lastName>Тест 0</lastName>
+    <phone>1112233 0</phone>
+    <email>test0@mail.ru</email>
+    <address>г. Москва, 0</address>
+  </contact>
+  <contact>
+    <firstName>Тест 1</firstName>
+    <lastName>Тест 1</lastName>
+    <phone>1112233 1</phone>
+    <email>test1@mail.ru</email>
+    <address>г. Москва, 1</address>
+  </contact>
+  <contact>
+    <firstName>Тест 2</firstName>
+    <lastName>Тест 2</lastName>
+    <phone>1112233 2</phone>
+    <email>test2@mail.ru</email>
+    <address>г. Москва, 2</address>
+  </contact>
+</list>

@@ -1,6 +1,8 @@
 package ru.stqa.pft.addressbook.tests;
 
+import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
+import org.openqa.selenium.json.TypeToken;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.GroupData;
@@ -27,8 +29,6 @@ public class GroupCreationTests extends TestBase {
             xml += line;
             line = reader.readLine();
         }
-//        XStream xstream = new XStream();
-//        xstream.processAnnotations(GroupData.class);
         XStream xstream = new XStream();
         xstream.processAnnotations(GroupData.class);
         xstream.allowTypes(new Class[]{GroupData.class});
@@ -37,8 +37,24 @@ public class GroupCreationTests extends TestBase {
     }
 
 
-    @Test(dataProvider = "validGroupsFromXml")
-    public void testGroupCreation(GroupData group) throws Exception {
+    @DataProvider
+    public Iterator<Object[]> validGroupsFromJson() throws IOException {
+
+        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")));
+        String json = "";
+        String line = reader.readLine();
+        while (line != null) {
+            json += line;
+            line = reader.readLine();
+        }
+        Gson gson = new Gson();
+        List<GroupData> groups = gson.fromJson(json, new TypeToken<List<GroupData>>(){}.getType()); //List<GroupData>.class
+        return groups.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
+    }
+
+
+    @Test(dataProvider = "validGroupsFromJson")
+    public void testCreateGroup(GroupData group) throws Exception {
         app.goTo().groupPage();
         Groups before = app.group().all();
         app.group().create(group);
@@ -48,7 +64,7 @@ public class GroupCreationTests extends TestBase {
         assertThat(after, equalTo(before.withAdded(group.withtId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
 
-    @Test
+    @Test(enabled = false)
     public void testBadGroupCreation() throws Exception {
         app.goTo().groupPage();
         Groups before = app.group().all();
@@ -58,5 +74,17 @@ public class GroupCreationTests extends TestBase {
         Groups after = app.group().all();
 
         assertThat(after, equalTo(before));
+    }
+
+    @Test(enabled = false)
+    public void testGroupCreation() throws Exception {
+        app.goTo().groupPage();
+        Groups before = app.group().all();
+        GroupData group = new GroupData().withName("test2");
+        app.group().create(group);
+        assertThat(app.group().count(), equalTo(before.size() + 1));
+        Groups after = app.group().all();
+        assertThat(after, equalTo(before.withAdded(group.withtId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+//        assertThat(after, equalTo(before));
     }
 }
