@@ -20,7 +20,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
+import java.io.IOException;
+import org.testng.annotations.BeforeMethod;
 
 
 public class ContactCreationTests extends TestBase {
@@ -51,7 +52,7 @@ public class ContactCreationTests extends TestBase {
 
     @DataProvider
     public Iterator<Object[]> validContactsFromJson() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/groups.json")));
+        BufferedReader reader = new BufferedReader(new FileReader(new File("src/test/resources/contacts.json")));
         String json = "";
         String line = reader.readLine();
         while (line != null) {
