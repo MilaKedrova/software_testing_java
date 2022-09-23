@@ -46,10 +46,12 @@ public class ContactHelper  extends HelperBase{
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
-    public void filContactFormWithPhones(ContactsData contactsData, boolean creation) {
+    public void filContactFormWithMoreContacts(ContactsData contactsData, boolean creation) {
         type(By.name("firstname"), contactsData.getFirstName());
         type(By.name("lastname"), contactsData.getLastName());
         type(By.name("email"), contactsData.getEmail());
+        type(By.name("email2"), contactsData.getEmail2());
+        type(By.name("email3"), contactsData.getEmail3());
         type(By.name("address"), contactsData.getAddress());
         type(By.name("home"), contactsData.getHomePhone());
         type(By.name("mobile"), contactsData.getMobilePhone());
@@ -63,37 +65,37 @@ public class ContactHelper  extends HelperBase{
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
 
-    public void filContactFormWithEmails(ContactsData contactsData, boolean creation) {
-        type(By.name("firstname"), contactsData.getFirstName());
-        type(By.name("lastname"), contactsData.getLastName());
-        type(By.name("home"), contactsData.getPhone());
-        type(By.name("address"), contactsData.getAddress());
-        type(By.name("email"), contactsData.getEmail());
-        type(By.name("email2"), contactsData.getEmail2());
-        type(By.name("email3"), contactsData.getEmail3());
-        if (creation) {
-            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
-        } else {
-            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
-        }
-        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
-        click(By.xpath("//div[@id='content']/form/input[21]"));
-    }
+//    public void filContactFormWithEmails(ContactsData contactsData, boolean creation) {
+//        type(By.name("firstname"), contactsData.getFirstName());
+//        type(By.name("lastname"), contactsData.getLastName());
+//        type(By.name("home"), contactsData.getPhone());
+//        type(By.name("address"), contactsData.getAddress());
+//        type(By.name("email"), contactsData.getEmail());
+//        type(By.name("email2"), contactsData.getEmail2());
+//        type(By.name("email3"), contactsData.getEmail3());
+//        if (creation) {
+//            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
+//        } else {
+//            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
+//        }
+//        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
+//        click(By.xpath("//div[@id='content']/form/input[21]"));
+//    }
 
-    public void filContactFormWithAddresses(ContactsData contactsData, boolean creation) {
-        type(By.name("firstname"), contactsData.getFirstName());
-        type(By.name("lastname"), contactsData.getLastName());
-        type(By.name("home"), contactsData.getPhone());
-        type(By.name("email"), contactsData.getEmail());
-        type(By.name("address"), contactsData.getAddress());
-        if (creation) {
-            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
-        } else {
-            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
-        }
-        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
-        click(By.xpath("//div[@id='content']/form/input[21]"));
-    }
+//    public void filContactFormWithAddresses(ContactsData contactsData, boolean creation) {
+//        type(By.name("firstname"), contactsData.getFirstName());
+//        type(By.name("lastname"), contactsData.getLastName());
+//        type(By.name("home"), contactsData.getPhone());
+//        type(By.name("email"), contactsData.getEmail());
+//        type(By.name("address"), contactsData.getAddress());
+//        if (creation) {
+//            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
+//        } else {
+//            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
+//        }
+//        click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
+//        click(By.xpath("//div[@id='content']/form/input[21]"));
+//    }
 
     public void modify(ContactsData contact) {
         selectContactById(contact.getId());
@@ -150,23 +152,12 @@ public class ContactHelper  extends HelperBase{
         contactCache = null;
     }
 
-    public void createWithPhones(ContactsData contact, boolean b) {
+    public void createWithMoreContacts(ContactsData contact, boolean b) {
         addNewContactPage();
-        filContactFormWithPhones(contact, true);
+        filContactFormWithMoreContacts(contact, true);
         contactCache = null;
     }
 
-    public void createWithEmails(ContactsData contact, boolean b) {
-        addNewContactPage();
-        filContactFormWithEmails(contact, true);
-        contactCache = null;
-    }
-
-    public void createWithAddresses(ContactsData contact, boolean b) {
-        addNewContactPage();
-        filContactFormWithAddresses(contact, true);
-        contactCache = null;
-    }
 
     public boolean isThereAContact() {
         return isElementPresent(By.name("selected[]"));
@@ -180,29 +171,13 @@ public class ContactHelper  extends HelperBase{
         }
     }
 
-    public void checkExistenceWithPhones() {
+    public void checkExistenceWithContacts() {
         if (all().size() == 0) {
             addNewContactPage();
-            createWithPhones(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
+            createWithMoreContacts(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
                     withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withHomePhone("123456")
-                    .withMobilePhone("5545-45-45").withWorkPhone("7(457)898-45-45"), true);
-        }
-    }
-
-    public void checkExistenceWithEmails() {
-        if (all().size() == 0) {
-            addNewContactPage();
-            createWithEmails(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10")
-                    .withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
-        }
-    }
-
-    public void checkExistenceWithAddresses() {
-        if (all().size() == 0) {
-            addNewContactPage();
-            createWithAddresses(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-                    withEmail("superman@mail.ru").withAddress("Smallville, 2/5").withGroup("test10"), true);
+                    .withMobilePhone("5545-45-45").withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
+                    withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
         }
     }
 
