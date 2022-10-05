@@ -39,9 +39,13 @@ public class ContactHelper  extends HelperBase{
     private void filContactFormWithoutGroup(ContactsData contactsData, boolean creation) {
         type(By.name("firstname"), contactsData.getFirstName());
         type(By.name("lastname"), contactsData.getLastName());
-        type(By.name("home"), contactsData.getPhone());
+        type(By.name("home"), contactsData.getHomePhone());
         type(By.name("email"), contactsData.getEmail());
+        type(By.name("email2"), contactsData.getEmail2());
+        type(By.name("email3"), contactsData.getEmail3());
         type(By.name("address"), contactsData.getAddress());
+        type(By.name("mobile"), contactsData.getMobilePhone());
+        type(By.name("work"), contactsData.getWorkPhone());
         click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
@@ -56,11 +60,11 @@ public class ContactHelper  extends HelperBase{
         type(By.name("home"), contactsData.getHomePhone());
         type(By.name("mobile"), contactsData.getMobilePhone());
         type(By.name("work"), contactsData.getWorkPhone());
-        if (creation) {
-            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
-        } else {
-            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
-        }
+//        if (creation) {
+//            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
+//        } else {
+//            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
+//        }
         click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
         click(By.xpath("//div[@id='content']/form/input[21]"));
     }
@@ -101,6 +105,14 @@ public class ContactHelper  extends HelperBase{
         selectContactById(contact.getId());
 //        initContactModification(0);
         filContactForm(contact, false);
+        submitContactModification();
+        contactCache = null;
+    }
+
+    public void modifyWithoutGroup(ContactsData contact) {
+        selectContactById(contact.getId());
+//        initContactModification(0);
+        filContactFormWithoutGroup(contact, false);
         submitContactModification();
         contactCache = null;
     }

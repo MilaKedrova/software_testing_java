@@ -3,11 +3,9 @@ package ru.stqa.pft.addressbook.tests;
 import com.google.gson.Gson;
 import com.thoughtworks.xstream.XStream;
 import org.openqa.selenium.json.TypeToken;
-import org.testng.annotations.*;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.ContactsData;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.BufferedReader;
@@ -18,10 +16,14 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
 import java.io.IOException;
+
 import org.testng.annotations.BeforeMethod;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 
 public class ContactCreationTests extends TestBase {
@@ -29,7 +31,10 @@ public class ContactCreationTests extends TestBase {
     @BeforeMethod
     public void ensurePreconditions() {
         app.goTo().groupPage();
-        app.group().checkExistence();
+        if (app.db().groups().size() == 0) {
+            app.goTo().groupPage();
+            app.group().create(new GroupData().withName("test1"));
+        }
         app.goTo().contactPage();
     }
 
@@ -61,48 +66,65 @@ public class ContactCreationTests extends TestBase {
                 line = reader.readLine();
             }
             Gson gson = new Gson();
-            List<ContactsData> contacts = gson.fromJson(json, new TypeToken<List<ContactsData>>(){}.getType()); //List<GroupData>.class
+            List<ContactsData> contacts = gson.fromJson(json, new TypeToken<List<ContactsData>>() {
+            }.getType()); //List<GroupData>.class
             return contacts.stream().map((g) -> new Object[]{g}).collect(Collectors.toList()).iterator();
         }
     }
 
     @Test(dataProvider = "validContactsFromJson")
     public void testContactCreationFromFile(ContactsData contact) throws Exception {
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
+        app.contact().createWithMoreContacts(contact, true);
+        app.goTo().contactPage();
+        Contacts after = app.db().contacts();
+        assertThat(app.contact().count(), equalTo(before.size() + 1));
+        app.goTo().contactPage();
+        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+    }
+
+    @Test
+    public void testContactCreation() throws Exception {
+        Contacts before = app.db().contacts();
+        ContactsData contact = new ContactsData().
+                withFirstName("Clarky").withLastName("Kent").withMobilePhone("454545").withHomePhone("111")
+                .withWorkPhone("454545").withEmail("superman@mail.ru").withEmail2("superman2@mail.ru").
+                withEmail3("superman3@mail.ru").withAddress("smallville");
         app.contact().createWithoutGroup(contact, true);
         app.goTo().contactPage();
-        Contacts after = app.contact().all();
-        assertThat(app.contact().count(), equalTo(before.size() + 1));
-        app.goTo().contactPage();
-        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
-    }
-
-    @Test(enabled = false)
-    public void testContactCreation() throws Exception {
-        Contacts before = app.contact().all();
-        File photo = new File("src/test/resources/test.jpeg");
-        ContactsData contact = new ContactsData().
-                withFirstName("Clarky").withLastName("Kent").withPhone("454545").
-                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withPhoto(photo);
-        app.contact().create(contact, true);
-        app.goTo().contactPage();
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
         assertThat(app.contact().count(), equalTo(before.size() + 1));
         app.goTo().contactPage();
 
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
+//    @Test
+//    public void testContactCreation() throws Exception {
+//        Contacts before = app.db().contacts();
+//        File photo = new File("src/test/resources/test.jpeg");
+//        ContactsData contact = new ContactsData().
+//                withFirstName("Clarky").withLastName("Kent").withMobilePhone("454545").withHomePhone("111")
+//                .withWorkPhone("454545").withEmail("superman@mail.ru").withEmail2("superman2@mail.ru").
+//                withEmail3("superman3@mail.ru").withAddress("smallville").withPhoto(photo);
+//        app.contact().create(contact, true);
+//        app.goTo().contactPage();
+//        Contacts after = app.db().contacts();
+//        assertThat(app.contact().count(), equalTo(before.size() + 1));
+//        app.goTo().contactPage();
+//
+//        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+//    }
 
-    @Test(enabled = false)
+    @Test
     public void testBadContactCreation() throws Exception {
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
         ContactsData contact = new ContactsData().
                 withFirstName("Clarky'").withLastName("Kent").withPhone("454545").
-                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10");
+                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test 1");
         app.contact().create(contact, true);
         app.goTo().contactPage();
         assertThat(app.contact().count(), equalTo(before.size()));
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
         app.goTo().contactPage();
         assertThat(after, equalTo(before));
     }

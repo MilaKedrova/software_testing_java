@@ -22,11 +22,11 @@ public class ContactDataGenerator {
     public int count;
 
     @Parameter(names = "-f", description = "Target file")
-    public String  file;
+    public String file;
 
     @Parameter(names = "-d", description = "Data format")
-    public String  format;
-
+    public String format;
+//-f src/test/resources/contacts.json -c 3 -d json
 
     public static void main(String[] args) throws IOException {
         ContactDataGenerator generator = new ContactDataGenerator();
@@ -46,19 +46,24 @@ public class ContactDataGenerator {
             saveAsCsv(contacts, new File(file));
         } else if (format.equals("json")) {
             saveAsJson(contacts, new File(file));
-        } else if(format.equals("xml")) {
+        } else if (format.equals("xml")) {
             saveAsXml(contacts, new File(file));
         } else {
-            System.out.println("Unrecognized format" + format);}
+            System.out.println("Unrecognized format" + format);
+        }
     }
 
     private void saveAsCsv(List<ContactsData> contacts, File file) throws IOException {
         try (Writer writer = new FileWriter(file)) {
             for (ContactsData contact : contacts) {
-                writer.write(String.format("%s;%s;%s;%s;%s\n", contact.getFirstName(), contact.getLastName(), contact.getPhone(), contact.getAddress(), contact.getEmail()));
+                writer.write(String.format("%s;%s;%s;%s;%s\n", contact.getFirstName(), contact.getLastName(),
+                                contact.getEmail(), contact.getAddress(), contact.getGroup(), contact.getHomePhone(),
+                        contact.getMobilePhone(), contact.getWorkPhone(), contact.getEmail2(), contact.getEmail3()));
+
             }
         }
     }
+
     private void saveAsJson(List<ContactsData> contacts, File file) throws IOException {
         Gson gson = new GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(contacts);
@@ -90,9 +95,13 @@ public class ContactDataGenerator {
             contacts.add(new ContactsData()
                     .withFirstName(String.format("Тест %s", i))
                     .withLastName(String.format("Тест %s", i))
-                    .withPhone(String.format("1112233 %s", i))
+                    .withEmail(String.format("test%s@mail.ru", i))
                     .withAddress(String.format("г. Москва, %s", i))
-                    .withEmail(String.format("test%s@mail.ru", i)));
+                    .withHomePhone(String.format("12345%s", i))
+                    .withMobilePhone(String.format("5545-45-4%s", i))
+                    .withWorkPhone(String.format("7(457)898-44-5%s", i))
+                    .withEmail2(String.format("hero-%s@bk.ru", i))
+                    .withEmail3(String.format("777-%s@google.com", i)));
         }
         return contacts;
     }

@@ -30,9 +30,11 @@ public class ContactsData {
     @Column(name="email")
     @Type(type = "text")
     private String email;
+    @Expose
     @Column(name="email2")
     @Type(type = "text")
     private String email2;
+    @Expose
     @Column(name="email3")
     @Type(type = "text")
     private String email3;
@@ -44,17 +46,22 @@ public class ContactsData {
     private String address;
     @Transient
     private String group;
+
+    @Expose
     @Column(name="home")
     @Type(type = "text")
     private String homePhone;
+    @Expose
     @Column(name="mobile")
     @Type(type = "text")
     private String mobilePhone;
+    @Expose
     @Column(name="work")
     @Type(type = "text")
     private String workPhone;
     @Transient
     private String allPhones;
+    @Transient
     @Column(name="photo")
     @Type(type = "text")
     private String photo;
@@ -197,9 +204,50 @@ public class ContactsData {
     @Override
     public String toString() {
         return "ContactsData{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", email2='" + email2 + '\'' +
+                ", email3='" + email3 + '\'' +
+                ", address='" + address + '\'' +
+                ", homePhone='" + homePhone + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", workPhone='" + workPhone + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ContactsData that = (ContactsData) o;
+
+        if (id != that.id) return false;
+        if (!Objects.equals(firstName, that.firstName)) return false;
+        if (!Objects.equals(lastName, that.lastName)) return false;
+        if (!Objects.equals(email, that.email)) return false;
+        if (!Objects.equals(email2, that.email2)) return false;
+        if (!Objects.equals(email3, that.email3)) return false;
+        if (!Objects.equals(address, that.address)) return false;
+        if (!Objects.equals(homePhone, that.homePhone)) return false;
+        if (!Objects.equals(mobilePhone, that.mobilePhone)) return false;
+        return Objects.equals(workPhone, that.workPhone);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
+        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (email2 != null ? email2.hashCode() : 0);
+        result = 31 * result + (email3 != null ? email3.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (homePhone != null ? homePhone.hashCode() : 0);
+        result = 31 * result + (mobilePhone != null ? mobilePhone.hashCode() : 0);
+        result = 31 * result + (workPhone != null ? workPhone.hashCode() : 0);
+        return result;
     }
 }

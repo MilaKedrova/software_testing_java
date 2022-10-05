@@ -2,22 +2,34 @@
   {
     "firstName": "Тест 0",
     "lastName": "Тест 0",
-    "phone": "1112233 0",
     "email": "test0@mail.ru",
-    "address": "г. Москва, 0"
+    "email2": "hero-0@bk.ru",
+    "email3": "777-0@google.com",
+    "address": "г. Москва, 0",
+    "homePhone": "123450",
+    "mobilePhone": "5545-45-40",
+    "workPhone": "7(457)898-44-50"
   },
   {
     "firstName": "Тест 1",
     "lastName": "Тест 1",
-    "phone": "1112233 1",
     "email": "test1@mail.ru",
-    "address": "г. Москва, 1"
+    "email2": "hero-1@bk.ru",
+    "email3": "777-1@google.com",
+    "address": "г. Москва, 1",
+    "homePhone": "123451",
+    "mobilePhone": "5545-45-41",
+    "workPhone": "7(457)898-44-51"
   },
   {
     "firstName": "Тест 2",
     "lastName": "Тест 2",
-    "phone": "1112233 2",
     "email": "test2@mail.ru",
-    "address": "г. Москва, 2"
+    "email2": "hero-2@bk.ru",
+    "email3": "777-2@google.com",
+    "address": "г. Москва, 2",
+    "homePhone": "123452",
+    "mobilePhone": "5545-45-42",
+    "workPhone": "7(457)898-44-52"
   }
 ]
