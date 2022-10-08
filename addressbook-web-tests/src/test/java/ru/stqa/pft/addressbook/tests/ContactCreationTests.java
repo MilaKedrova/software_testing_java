@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import org.testng.annotations.BeforeMethod;
 import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
 
 
 public class ContactCreationTests extends TestBase {
@@ -98,34 +99,37 @@ public class ContactCreationTests extends TestBase {
 
         assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
     }
-//    @Test
-//    public void testContactCreation() throws Exception {
-//        Contacts before = app.db().contacts();
-//        File photo = new File("src/test/resources/test.jpeg");
-//        ContactsData contact = new ContactsData().
-//                withFirstName("Clarky").withLastName("Kent").withMobilePhone("454545").withHomePhone("111")
-//                .withWorkPhone("454545").withEmail("superman@mail.ru").withEmail2("superman2@mail.ru").
-//                withEmail3("superman3@mail.ru").withAddress("smallville").withPhoto(photo);
-//        app.contact().create(contact, true);
-//        app.goTo().contactPage();
-//        Contacts after = app.db().contacts();
-//        assertThat(app.contact().count(), equalTo(before.size() + 1));
-//        app.goTo().contactPage();
-//
-//        assertThat(after, equalTo(before.withAdded(contact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
-//    }
+    @Test
+    public void testContactCreationWithGroup() throws Exception {
+        Groups groups = app.db().groups();
+        Contacts before = app.db().contacts();
+        File photo = new File("src/test/resources/test.jpeg");
+        ContactsData newContact = new ContactsData().
+                withFirstName("Clarky").withLastName("Kent").withMobilePhone("454545").withHomePhone("111")
+                .withWorkPhone("454545").withEmail("superman@mail.ru").withEmail2("superman2@mail.ru").
+                withEmail3("superman3@mail.ru").withAddress("smallville").withPhoto(photo).inGroup(groups.iterator().next());
+        app.contact().createWithMoreContacts(newContact, true);
+        app.goTo().contactPage();
+        Contacts after = app.db().contacts();
+        assertThat(app.contact().count(), equalTo(before.size() + 1));
+        app.goTo().contactPage();
+
+        assertThat(after, equalTo(after.withAdded(newContact.withId(after.stream().mapToInt((g) -> g.getId()).max().getAsInt()))));
+    }
 
     @Test
     public void testBadContactCreation() throws Exception {
         Contacts before = app.db().contacts();
         ContactsData contact = new ContactsData().
                 withFirstName("Clarky'").withLastName("Kent").withPhone("454545").
-                withEmail("superman@mail.ru").withAddress("smallville").withGroup("test 1");
-        app.contact().create(contact, true);
+                withEmail("superman@mail.ru").withAddress("smallville");
+        app.contact().createWithoutGroup(contact, true);
         app.goTo().contactPage();
         assertThat(app.contact().count(), equalTo(before.size()));
         Contacts after = app.db().contacts();
         app.goTo().contactPage();
         assertThat(after, equalTo(before));
     }
+
+
 }

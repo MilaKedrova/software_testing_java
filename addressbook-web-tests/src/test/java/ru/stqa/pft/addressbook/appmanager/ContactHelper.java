@@ -10,7 +10,9 @@ import ru.stqa.pft.addressbook.model.ContactsData;
 
 import java.util.List;
 
-public class ContactHelper  extends HelperBase{
+public class ContactHelper extends HelperBase {
+
+    NavigationHelper navigationHelper = new NavigationHelper(wd);
 
     public void acceptAlert() {
         wd.switchTo().alert().accept();
@@ -28,12 +30,16 @@ public class ContactHelper  extends HelperBase{
         type(By.name("address"), contactsData.getAddress());
 
         if (creation) {
-            new Select(wd.findElement(By.xpath("//*[@name='new_group']"))).selectByVisibleText(contactsData.getGroup());
-        } else {
-            Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
-        }
+            if (contactsData.getGroups().size() > 0) {
+                Assert.assertTrue(contactsData.getGroups().size() == 1);
+                new Select(wd.findElement(By.xpath("//*[@name='new_group']")))
+                        .selectByVisibleText(contactsData.getGroups().iterator().next().getName());
+            } else {
+                Assert.assertFalse(isElementPresent(By.xpath("//*[@name='new_group']")));
+            }
         click(By.xpath("//*/text()[normalize-space(.)='']/parent::*"));
         click(By.xpath("//div[@id='content']/form/input[21]"));
+    }
     }
 
     private void filContactFormWithoutGroup(ContactsData contactsData, boolean creation) {
@@ -132,8 +138,12 @@ public class ContactHelper  extends HelperBase{
         wd.findElements(By.name("selected[]")).get(index).click();
     }
 
+//    public void selectContactById(int id) {
+//        wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
+//    }
+
     public void selectContactById(int id) {
-        wd.findElement(By.cssSelector("a[href='edit.php?id=" + id + "']")).click();
+        wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
     }
 
     public void initContactModification(int index) {
@@ -175,23 +185,23 @@ public class ContactHelper  extends HelperBase{
         return isElementPresent(By.name("selected[]"));
     }
 
-    public void checkExistence() {
-        if (all().size() == 0) {
-            addNewContactPage();
-            create(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10"), true);
-        }
-    }
-
-    public void checkExistenceWithContacts() {
-        if (all().size() == 0) {
-            addNewContactPage();
-            createWithMoreContacts(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withHomePhone("123456")
-                    .withMobilePhone("5545-45-45").withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
-                    withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
-        }
-    }
+//    public void checkExistence() {
+//        if (all().size() == 0) {
+//            addNewContactPage();
+//            create(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
+//                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10"), true);
+//        }
+//    }
+//
+//    public void checkExistenceWithContacts() {
+//        if (all().size() == 0) {
+//            addNewContactPage();
+//            createWithMoreContacts(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
+//                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withHomePhone("123456")
+//                    .withMobilePhone("5545-45-45").withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
+//                    withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
+//        }
+//    }
 
     public int count() {
         return wd.findElements(By.name("selected[]")).size();
@@ -243,5 +253,24 @@ public class ContactHelper  extends HelperBase{
         WebElement row = checkbox.findElement(By.xpath("./../.."));
         List<WebElement> cells = row.findElements(By.tagName("td"));
         cells.get(7).findElement(By.tagName("a")).click();
+    }
+
+    public void selectGroupForContact() {
+        String groupName = wd.findElement(By.xpath("//select[@name=\"to_group\"]")).getText();
+        System.out.println(groupName);
+    }
+
+    public void selectGroupByName(String groupName) {
+        click(By.name("to_group"));
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText(groupName);
+        System.out.println(groupName);
+    }
+
+    public void addContactToGroup() {
+        click(By.name("add"));
+    }
+
+    public void deleteContactFromGroup() {
+        click(By.name("remove"));
     }
 }

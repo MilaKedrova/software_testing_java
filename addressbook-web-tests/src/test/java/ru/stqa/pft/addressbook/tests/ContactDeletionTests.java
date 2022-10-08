@@ -30,7 +30,7 @@ public class ContactDeletionTests extends TestBase {
             app.contact().addNewContactPage();
             app.contact().createWithMoreContacts(new ContactsData().withFirstName("Clark")
                     .withLastName("Kent").withEmail("superman@mail.ru").withAddress("smallville")
-                    .withGroup("test 1").withHomePhone("123456").withMobilePhone("5545-45-45").
+                    .withHomePhone("123456").withMobilePhone("5545-45-45").
                     withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
                     withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
         }
