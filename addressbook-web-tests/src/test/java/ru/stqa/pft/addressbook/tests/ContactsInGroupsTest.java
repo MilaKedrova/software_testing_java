@@ -34,6 +34,7 @@ public class ContactsInGroupsTest extends TestBase {
             for (ContactsData contact : contacts) {
                 if (contact.getGroups().size() == 0) {
                     contactId = contact.getId();
+                    System.out.println("contactId = " + contactId);
                     break;
                 }
                 if (contactId == 0) {
@@ -43,6 +44,8 @@ public class ContactsInGroupsTest extends TestBase {
                             .withHomePhone("123456").withMobilePhone("5545-45-45").
                             withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
                             withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
+                    contactId = contact.getId();
+                    System.out.println("555555contactId = " + contactId);
                 }
             }
         }
@@ -65,6 +68,7 @@ public class ContactsInGroupsTest extends TestBase {
     @Test
     public void deleteContactFromGroup() {
         Groups contactGroupsBefore = app.db().getContactById(contactId).getGroups();
+        System.out.println("777777 contactId = " + contactId);
         System.out.println("Группы, в которые входил контакт с id = " + contactId + ": " + contactGroupsBefore);
         app.goTo().contactPage();
         app.contact().selectGroupByName("test1");
