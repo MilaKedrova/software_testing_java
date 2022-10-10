@@ -67,7 +67,10 @@ public class ContactsInGroupsTest extends TestBase {
 
     @Test
     public void deleteContactFromGroup() {
-        addContactToGroup();
+        app.goTo().contactPage();
+        app.contact().selectContactById(contactId);
+        app.contact().selectGroupForContact();
+        app.contact().addContactToGroup();
         Groups contactGroupsBefore = app.db().getContactById(contactId).getGroups();
         System.out.println("777777 contactId = " + contactId);
         System.out.println("Группы, в которые входил контакт с id = " + contactId + ": " + contactGroupsBefore);
