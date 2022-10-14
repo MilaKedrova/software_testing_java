@@ -25,7 +25,7 @@ public class HttpSession {
 
     }
     public boolean login(String username, String password) throws IOException {
-        HttpPost post=new HttpPost(app.getProperty("web.baseURL")+"/login.php");
+        HttpPost post = new HttpPost(app.getProperty("web.baseUrl") + "/login.php");
         List<NameValuePair> params =new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
@@ -34,7 +34,7 @@ public class HttpSession {
         post.setEntity(new UrlEncodedFormEntity(params));
         CloseableHttpResponse response= httpclient.execute(post);
         String body = getTextFrom(response);
-        return body.contains(String.format("<span class=\"italic\">s%</span>", username));
+        return body.contains(String.format("<span class=\"user-info\">%s</span>", username));
 
     }
     private String getTextFrom(CloseableHttpResponse response)  throws IOException{
@@ -45,10 +45,10 @@ public class HttpSession {
         }
     }
     public boolean isLogggedInAs(String username) throws IOException {
-        HttpGet get=new HttpGet(app.getProperty("web.baseURL")+"/index.php");
+        HttpGet get=new HttpGet(app.getProperty("web.baseUrl") + "/index.php");
         CloseableHttpResponse response= httpclient.execute(get);
         String body = getTextFrom(response);
-        return body.contains(String.format("<span class=\"italic\">s%</span>", username));
+        return body.contains(String.format("<span class=\"user-info\">%s</span>", username));
 
     }
 }
