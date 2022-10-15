@@ -47,10 +47,10 @@ public class MailHelper { private ApplicationManager app;
         }
     }
 
-//    public void start() {
-//        wiser.start();
-//    }
-//
+    public void start() {
+        wiser.start();
+    }
+
     public void stop() {
         wiser.stop();
     }

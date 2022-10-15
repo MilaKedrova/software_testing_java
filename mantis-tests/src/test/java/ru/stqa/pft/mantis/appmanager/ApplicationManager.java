@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.regex.MatchResult;
+import ru.stqa.pft.mantis.model.UserData;
 
 public class ApplicationManager {
     private final Properties properties;
@@ -24,6 +24,9 @@ public class ApplicationManager {
     private FtpHelper ftp;
     private MailHelper mailHelper;
     private JamesHelper jamesHelper;
+    private DbHelper dbHelper;
+    private ChangeUserPasswordHelper changeUserPasswordHelper;
+
 
     public ApplicationManager(String browser) {
         this.browser = browser;
@@ -93,5 +96,19 @@ public class ApplicationManager {
             jamesHelper = new JamesHelper(this);
         }
         return jamesHelper;
+    }
+
+    public ChangeUserPasswordHelper changeUserPassword() {
+        if (changeUserPasswordHelper == null) {
+            changeUserPasswordHelper = new ChangeUserPasswordHelper(this);
+        }
+        return  changeUserPasswordHelper;
+    }
+
+    public DbHelper db(){
+        if (dbHelper == null) {
+            dbHelper = new DbHelper(this);
+        }
+        return dbHelper;
     }
 }
