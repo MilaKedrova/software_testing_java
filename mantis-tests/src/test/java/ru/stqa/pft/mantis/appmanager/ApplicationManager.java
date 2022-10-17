@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Objects;
 import java.util.Properties;
-import ru.stqa.pft.mantis.model.UserData;
 
 public class ApplicationManager {
     private final Properties properties;
@@ -26,6 +25,7 @@ public class ApplicationManager {
     private JamesHelper jamesHelper;
     private DbHelper dbHelper;
     private ChangeUserPasswordHelper changeUserPasswordHelper;
+    private SoapHelper soapHelper;
 
 
     public ApplicationManager(String browser) {
@@ -110,5 +110,12 @@ public class ApplicationManager {
             dbHelper = new DbHelper(this);
         }
         return dbHelper;
+    }
+
+    public SoapHelper soap() {
+        if (soapHelper == null) {
+            soapHelper = new SoapHelper(this);
+        }
+        return soapHelper;
     }
 }
