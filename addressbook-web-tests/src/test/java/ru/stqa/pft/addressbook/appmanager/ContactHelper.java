@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.ContactsData;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
 
@@ -154,6 +155,10 @@ public class ContactHelper extends HelperBase {
         click(By.name("update"));
     }
 
+    public void submitGroup() {
+        click(By.xpath("//div[@id='content']/form[2]/div[4]/input"));
+    }
+
     public void modifyContact() {
         click(By.name("modifiy"));
     }
@@ -185,23 +190,6 @@ public class ContactHelper extends HelperBase {
         return isElementPresent(By.name("selected[]"));
     }
 
-//    public void checkExistence() {
-//        if (all().size() == 0) {
-//            addNewContactPage();
-//            create(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-//                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10"), true);
-//        }
-//    }
-//
-//    public void checkExistenceWithContacts() {
-//        if (all().size() == 0) {
-//            addNewContactPage();
-//            createWithMoreContacts(new ContactsData().withFirstName("Clark").withLastName("Kent").withPhone("454545").
-//                    withEmail("superman@mail.ru").withAddress("smallville").withGroup("test10").withHomePhone("123456")
-//                    .withMobilePhone("5545-45-45").withWorkPhone("7(457)898-45-45").withEmail("superman@mail.ru").
-//                    withEmail2("hero-123@bk.ru").withEmail3("777@google.com"), true);
-//        }
-//    }
 
     public int count() {
         return wd.findElements(By.name("selected[]")).size();
@@ -260,9 +248,13 @@ public class ContactHelper extends HelperBase {
         System.out.println(groupName);
     }
 
-    public void selectGroupByName(String groupName) {
-        click(By.name("to_group"));
-        new Select(wd.findElement(By.name("group"))).selectByVisibleText(groupName);
+    public void selectAll()
+    {
+        new Select(wd.findElement(By.name("group"))).selectByVisibleText("[all]");
+    }
+
+    public void selectGroupByName(GroupData groupName) {
+        new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(groupName.getId()));
         System.out.println(groupName);
     }
 
@@ -272,5 +264,9 @@ public class ContactHelper extends HelperBase {
 
     public void deleteContactFromGroup() {
         click(By.name("remove"));
+    }
+
+    public void selectGroupForDelete(GroupData selectGroup) {
+        new Select(wd.findElement(By.name("group"))).selectByValue(String.valueOf(selectGroup.getId()));
     }
 }
